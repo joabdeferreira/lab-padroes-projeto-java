@@ -1,57 +1,42 @@
 package one.digitalinnovation.gof;
 
-import one.digitalinnovation.gof.facade.Facade;
-import one.digitalinnovation.gof.singleton.SingletonEager;
-import one.digitalinnovation.gof.singleton.SingletonLazy;
-import one.digitalinnovation.gof.singleton.SingletonLazyHolder;
-import one.digitalinnovation.gof.strategy.Comportamento;
-import one.digitalinnovation.gof.strategy.ComportamentoAgressivo;
-import one.digitalinnovation.gof.strategy.ComportamentoDefensivo;
-import one.digitalinnovation.gof.strategy.ComportamentoNormal;
-import one.digitalinnovation.gof.strategy.Robo;
+import java.time.LocalDate;
+
+import one.digitalinnovation.gof.services.CorretoraService;
 
 public class Test {
 
 	public static void main(String[] args) {
 		
-		// Singleton
+		CorretoraService broker = CorretoraService.getInstancia();
+		broker.adicionarCliente("Jose da Silva Santos", "00010300244");
+		broker.adicionarCliente("Maria Souza Pereira", "00100200304");
+		//broker.listarClientes();
 		
-		SingletonLazy lazy = SingletonLazy.getInstancia();
-		System.out.println(lazy);
-		lazy = SingletonLazy.getInstancia();
-		System.out.println(lazy);
+		broker.adicionarTransacao(broker.getClientesById(1L), 1000D, LocalDate.of(2021, 01, 02), "", 1);
+		broker.adicionarTransacao(broker.getClientesById(1L), -500D, LocalDate.of(2022, 01, 03), "", 1);
+		broker.adicionarTransacao(broker.getClientesById(1L), 100D, LocalDate.of(2023, 01, 02), "", 1);
+	
 		
-		SingletonEager eager = SingletonEager.getInstancia();
-		System.out.println(eager);
-		eager = SingletonEager.getInstancia();
-		System.out.println(eager);
+		broker.adicionarTransacao(broker.getClientesById(2L), 100D, LocalDate.of(2021, 01, 02), "", 1);
+		broker.adicionarTransacao(broker.getClientesById(2L), -60D, LocalDate.of(2022, 01, 03), "", 1);
+		broker.adicionarTransacao(broker.getClientesById(2L), 10D, LocalDate.of(2023, 01, 02), "", 1);
+
+
 		
-		SingletonLazyHolder lazyHolder = SingletonLazyHolder.getInstancia();
-		System.out.println(lazyHolder);
-		lazyHolder = SingletonLazyHolder.getInstancia();
-		System.out.println(lazyHolder);
 		
-		// Strategy
+		//(Cliente cliente, double valor, LocalDate data, String ticker, int quant)
+		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2020, 01, 02), "SANB3", 3);
+		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2021, 01, 02), "SANB3", -5);
+		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2022, 01, 02), "SANB3", 3);
+		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2023, 01, 02), "SANB3", -5);
 		
-		Comportamento defensivo = new ComportamentoDefensivo();
-		Comportamento normal = new ComportamentoNormal();
-		Comportamento agressivo = new ComportamentoAgressivo();
+		broker.getClientesById(1L).listarTransacoes();
+		broker.getClientesById(2L).listarTransacoes();
+		//broker.getClientesById(1L).getTransacoes().get(5).toString();
 		
-		Robo robo = new Robo();
-		robo.setComportamento(normal);
-		robo.mover();
-		robo.mover();
-		robo.setComportamento(defensivo);
-		robo.mover();
-		robo.setComportamento(agressivo);
-		robo.mover();
-		robo.mover();
-		robo.mover();
 		
-		// Facade
 		
-		Facade facade = new Facade();
-		facade.migrarCliente("Venilton", "14801788");
 	}
 
 }
