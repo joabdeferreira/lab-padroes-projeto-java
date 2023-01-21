@@ -85,12 +85,13 @@ public class CorretoraService{
  			
  		}
  		else {
+			AcaoService auditor = new AcaoService();
  			if (quant == 0)  System.out.println("A QUANTIDADE NÃO PODE SER ZERO (0)");
  			if (quant > 0) {
  				//public Compra(Cliente cliente, String ticker, double precoUnit, int quant, LocalDate data, Long id)
  				List<Transacao> teste = cliente.getTransacoes();
  				Transacao transacao = new Compra(cliente, ticker, valor, quant, data, Long.valueOf(contadorTransacoes+1));
- 				if (validarTransacao(teste, transacao)){
+ 				if ((validarTransacao(teste, transacao))&&(auditor.existeAcao(transacao))){
  					contadorTransacoes++;
  					teste.add(transacao);
  					teste.sort(Comparator.comparing(Transacao::getData));
@@ -103,8 +104,8 @@ public class CorretoraService{
  			}
  			if (quant < 0) {
  				Transacao transacao = new Venda(cliente, ticker, valor, quant, data, Long.valueOf(contadorTransacoes+1));
- 				AcaoService auditor = new AcaoService();
- 				if (auditor.validaVenda(cliente.getTransacoes(), transacao)) {
+
+ 				if ((auditor.validaVenda(cliente.getTransacoes(), transacao))&&(auditor.existeAcao(transacao))){
  					contadorTransacoes++;
  					cliente.getTransacoes().add(transacao);
  					cliente.getTransacoes().sort(Comparator.comparing(Transacao::getData));
@@ -116,7 +117,6 @@ public class CorretoraService{
  		}
 		
 	}
- 	
  	
  	
  	public boolean validarTransacao(List<Transacao> teste, Transacao transacao) {
@@ -137,22 +137,22 @@ public class CorretoraService{
 		}
  	}
 	/**
-	 * Adicionar funcao 
-	 * public void adicionarTransacao(Cliente cliente, double valor, String ticker, LocalDateTime data){
-	 * }
-	 */
-
-	/**
 	 * @return the contadorTransacoes
 	 */
 	public int getContadorTransacoes() {
 		return contadorTransacoes;
 	}
 	
-
 	
-	
-	
+	public double calcularPatrimonio(Cliente cliente) {
+		List<Transacao> transacoes = cliente.getTransacoes();
+		double patrimonio = 0;
+		for (Transacao teste: transacoes) {
+			patrimonio += teste.getValor();
+		}
+		System.out.println(patrimonio);
+		return patrimonio;
+	}
 	
 	
 }

@@ -26,14 +26,16 @@ public class Test {
 		
 		
 		//(Cliente cliente, double valor, LocalDate data, String ticker, int quant)
-		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2020, 01, 02), "SANB3", 3);
-		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2021, 01, 02), "SANB3", -5);
-		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2022, 01, 02), "SANB3", 3);
-		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2023, 01, 02), "SANB3", -5);
+		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2020, 01, 02), "SANB11", 3);
+		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2021, 01, 02), "SANB11", -5);
+		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2022, 01, 02), "SANB11", 3);
+		broker.adicionarTransacao(broker.getClientesById(1L), 15D, LocalDate.of(2023, 01, 02), "SANB11", -5);
 		
 		broker.getClientesById(1L).listarTransacoes();
 		broker.getClientesById(2L).listarTransacoes();
-		//broker.getClientesById(1L).getTransacoes().get(5).toString();
+		broker.calcularPatrimonio(broker.getClientesById(1L));
+		broker.calcularPatrimonio(broker.getClientesById(2L));
+		
 		
 		
 		
